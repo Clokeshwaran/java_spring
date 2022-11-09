@@ -22,7 +22,7 @@ public class emailsenderservice {
 
         message.setFrom("lokeshnrm07@gmail.com");
         message.setTo(toemail);
-        message.setText("https://localhost:8080/verify/"+body);
+        message.setText("https://localhost:8080"+body);
         message.setSubject(subject);
 
 

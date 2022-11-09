@@ -1,41 +1,33 @@
 package com.example.email.service;
 
-
-//import com.example.email.entity.token_entity;
-import com.example.email.entity.login_entity;
+import com.example.email.confic.Passwordconfig;
 import com.example.email.entity.token_entity;
-import com.example.email.jwt.Token;
-//import com.example.email.repo.token_repo;
-//import com.example.email.repo.token_repo;
+import com.example.email.entity.user_entity;
 import com.example.email.repo.token_repo;
+import com.example.email.repo.user_repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
-import java.util.Date;
 import java.util.List;
 
-import com.example.email.entity.user_entity;
-import com.example.email.repo.user_repo;
-
-
-
-
 @Service
-public class service_method {
-//
+public class Signup_service {//implements UserDetailsService {
     @Autowired
     private user_repo user_repo;
+    @Autowired
+    private token_repo token_repos;
+
 
     @Autowired
     private emailsenderservice eservice;
 
     @Autowired
-    private token_repo token_repos;
-
+    Passwordconfig passwordconfig;
 
     public List<user_entity> getdata() {
         return user_repo.findAll();
@@ -43,21 +35,22 @@ public class service_method {
 
 
 //post get method
-    public ResponseEntity<?> create(user_entity lok){
+    public ResponseEntity<?> create(user_entity lok){//}, user_entity user) {
         if (user_repo.findByEmail(lok.getEmail()) == null) {
-            //hash
-            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10, new SecureRandom());
-            lok.setPassword( bCryptPasswordEncoder.encode(lok.getPassword()));
+
+            //password hashing
+            lok.setPassword(passwordconfig.password(lok.getPassword()));
 
             token_entity token=new token_entity(lok);
             String link=token.getCon_token();
 
+            //mail sent to the user email id
             eservice.sendemail(lok.getEmail(),
-                    link,
+                    "/verify/"+link,
                     "Account verification email");
-
             user_repo.save(lok);
             token_repos.save(token);
+
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("added successfully");
         }
         else
@@ -65,9 +58,9 @@ public class service_method {
     }
 
 
-
-    //verification method
+//user validation
     public ResponseEntity verify(String token){
+
       if(token_repos.findBycon_token(token)!=null)
         {
             String email=token_repos.findByEmail(token);
@@ -80,6 +73,8 @@ public class service_method {
        else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found!");
     }
+
+
 }
 
 

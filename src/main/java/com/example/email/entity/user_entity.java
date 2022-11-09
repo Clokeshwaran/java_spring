@@ -1,6 +1,5 @@
 package com.example.email.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -32,28 +31,42 @@ public class user_entity {
     private  String Gender;
 
     private Date Date_of_birth;
+    private String role="user";
 
-    private  boolean is_enabled;
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private  boolean is_enabled=false;
 
 
-
-//    public user_entity(String first_name, String last_name, String email, String password, String gender, Date date_of_birth) {
-//        First_name = first_name;
-//        Last_name = last_name;
-//        Email = email;
-//        this.Password = password;
-//        Gender = gender;
-//        Date_of_birth = date_of_birth;
-//    }
-
-    public user_entity() {
-
+    public user_entity(String first_name, String last_name, String email, String password, String gender, Date date_of_birth, String role) {
+        First_name = first_name;
+        Last_name = last_name;
+        Email = email;
+        Password = password;
+        Gender = gender;
+        Date_of_birth = date_of_birth;
+        role = role;
     }
 
     public user_entity(boolean enabled) {
         is_enabled=enabled;
 
     }
+
+    public user_entity() {
+
+    }
+
+
+//    public user_entity(String s, String lokesh, String lokesh1, String waran, String admin, int i, String male) {
+//
+//    }
 
     public String getFirst_name() {
         return First_name;
@@ -103,7 +116,7 @@ public class user_entity {
         Date_of_birth = date_of_birth;
     }
 
-    public boolean isIs_enabled() {
+    public boolean getIs_enabled() {
         return is_enabled;
     }
 

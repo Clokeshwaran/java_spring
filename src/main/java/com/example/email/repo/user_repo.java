@@ -20,7 +20,18 @@ public interface user_repo extends JpaRepository<user_entity,String> {
       return null;
   }
 
+//  user_entity findByname(String name);
 
+
+    default user_entity findbyemailandpassword(String Email, String password) {
+        List<user_entity> all = findAll();
+        for (user_entity user : all) {
+            if (user.getEmail().equals(Email) && user.getPassword().equals(password)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }
 
 

@@ -2,9 +2,6 @@ package com.example.email.entity;
 
 import org.springframework.context.annotation.Configuration;
 
-
-
-
 @Configuration
 public class login_entity {
     private String Email;

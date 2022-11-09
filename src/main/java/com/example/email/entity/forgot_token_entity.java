@@ -7,49 +7,35 @@ import javax.persistence.Id;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity(name = "token")
-public class token_entity {
+@Entity(name = "forgot_token")
+public class forgot_token_entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long token_id;
 
-    private String con_token;
+    private String token;
 
     private Date created_date;
 
     private String user_id;
 
-
-    public token_entity(user_entity user) {
+    public forgot_token_entity(String email) {
+        this.token = UUID.randomUUID().toString();
         this.created_date = new Date();
-        con_token= UUID.randomUUID().toString();
-        this.user_id = user.getEmail();
-    }
-    public token_entity(String email) {
-        this.created_date = new Date();
-        con_token= UUID.randomUUID().toString();
         this.user_id = email;
     }
 
-    public token_entity() {
+    public forgot_token_entity() {
 
-    }
-
-    public long getToken_id() {
-        return token_id;
-    }
-
-    public void setToken_id(long token_id) {
-        this.token_id = token_id;
     }
 
     public String getCon_token() {
-        return con_token;
+        return token;
     }
 
-    public  void setCon_token(String con_token) {
-        this.con_token = con_token;
+    public void setCon_token(String con_token) {
+        this.token = con_token;
     }
 
     public Date getCreated_date() {
@@ -64,7 +50,7 @@ public class token_entity {
         return user_id;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = String.valueOf(user_id);
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }
