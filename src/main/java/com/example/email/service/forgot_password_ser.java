@@ -21,6 +21,8 @@ public class forgot_password_ser {
     private emailsenderservice eservice;
     @Autowired
     private forgot_token_repo for_token_repos;
+    @Autowired
+    Passwordconfig passwordconfig;
 
 
     //--------
@@ -33,6 +35,9 @@ public class forgot_password_ser {
     }
 
     public String forgot(String email){
+        if(find(email)){
+//            return forgot_password.forgot(email);
+
             forgot_token_entity token=new forgot_token_entity(email);
             String link=token.getCon_token();
             eservice.sendemail(email,
@@ -42,6 +47,9 @@ public class forgot_password_ser {
             for_token_repos.save(token);
 
             return "forgot Mail is send";
+        }
+        return "Enter the valid user name";
+
     }
 
 
@@ -64,6 +72,29 @@ public class forgot_password_ser {
         }
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not Found!");
+    }
+
+
+    //----------------------------------------------------------------------------
+    //update_user_list
+
+    public  ResponseEntity update_user(user_entity user){
+
+//        String user_pass = user_repo.findByEmail(user.getEmail()).getPassword();
+
+        if (user_repo.findByEmail(user.getEmail()) != null) {
+
+            //password hashing
+//            user.setPassword(passwordconfig.password(user.getPassword()));
+
+//            user.setPassword(user_pass);
+            user_repo.save(user);
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("update successfully");
+        }
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("update failed\n please" +
+                    "Enter the valid email id");
     }
 
 

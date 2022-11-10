@@ -4,6 +4,7 @@ import com.example.email.entity.user_entity;
 import com.example.email.service.Signup_service;
 //import com.example.email.service.forgot_password_ser;
 import com.example.email.service.login_service;
+//import com.example.email.service.update_list;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,20 @@ public class controller {
     {
         return ser.verify(token);
     }
+
+
+
+//    @Autowired(required=true)
+//    private com.example.email.service.update_list update_list;
+
+
+
+//    @PostMapping("/update")
+//    public ResponseEntity update(user_entity user){
+//
+//        return f.update_user(user);
+//
+//    }
 
 
 
