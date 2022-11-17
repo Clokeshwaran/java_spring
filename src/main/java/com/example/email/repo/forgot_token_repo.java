@@ -1,4 +1,4 @@
-package com.example.email.repo;
+package com.example.demo_forgot;
 
 import com.example.email.entity.forgot_token_entity;
 import com.example.email.entity.token_entity;
@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface forgot_token_repo extends JpaRepository<forgot_token_entity,Integer> {
 
-//     forgot_token_entity findBycon_token(String con_token);
-    public default forgot_token_entity findBycon_token(String con_token) {
+//     forgot_token_entity findByCon_token(String token);
+     default forgot_token_entity findByCon_token(String con_token) {
         List<forgot_token_entity> all = findAll();
         for (forgot_token_entity token : all) {
             if (token.getCon_token().equals(con_token)) {

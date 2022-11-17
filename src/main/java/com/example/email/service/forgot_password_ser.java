@@ -1,4 +1,4 @@
-package com.example.email.service;
+package com.example.demo_forgot;
 
 import com.example.email.confic.Passwordconfig;
 import com.example.email.entity.forgot_token_entity;
@@ -35,7 +35,6 @@ public class forgot_password_ser {
     }
 
     public String forgot(String email){
-        if(find(email)){
 //            return forgot_password.forgot(email);
 
             forgot_token_entity token=new forgot_token_entity(email);
@@ -47,8 +46,6 @@ public class forgot_password_ser {
             for_token_repos.save(token);
 
             return "forgot Mail is send";
-        }
-        return "Enter the valid user name";
 
     }
 
@@ -57,16 +54,16 @@ public class forgot_password_ser {
 
     public ResponseEntity verify_password(String token, String pass){
 
-        if(for_token_repos.findBycon_token(token)!=null)
+        if(for_token_repos.findByCon_token(token)!=null)
         {
-            forgot_token_entity email=for_token_repos.findBycon_token(token);
+            forgot_token_entity email=for_token_repos.findByCon_token(token);
 
 //            String email= String.valueOf(for_token_repos.findBycon_token(token));//findByEmail(token);
             user_entity user=user_repo.findByEmail(email.getUser_id());
 
             user.setPassword(password.password(pass));
 
-            for_token_repos.delete(for_token_repos.findBycon_token(token));
+            for_token_repos.delete(for_token_repos.findByCon_token(token));
             user_repo.save(user);
             return ResponseEntity.status(HttpStatus.OK).body("success");
         }
@@ -80,21 +77,21 @@ public class forgot_password_ser {
 
     public  ResponseEntity update_user(user_entity user){
 
-//        String user_pass = user_repo.findByEmail(user.getEmail()).getPassword();
 
         if (user_repo.findByEmail(user.getEmail()) != null) {
 
             //password hashing
 //            user.setPassword(passwordconfig.password(user.getPassword()));
+            String user_pass = user_repo.findByEmail(user.getEmail()).getPassword();
 
-//            user.setPassword(user_pass);
+            user.setPassword(user_pass);
             user_repo.save(user);
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("update successfully");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("update successfully\n" +
+                    "password can not be updated");
         }
         else
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("update failed\n please" +
-                    "Enter the valid email id");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("update failed\nplease Enter the valid email id");
     }
 
 
